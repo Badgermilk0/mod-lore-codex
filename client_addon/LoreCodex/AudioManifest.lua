@@ -1,6 +1,6 @@
 -- The voiceover clips in the audio folder, by name (the entry id, and <id>_<part> for a part) with
 -- their length in seconds. The client can't ask whether a file exists, so the codex only offers to
--- play what is listed here, and it cuts a clip off when its length is up.
+-- play what is listed here, and it starts the next clip when a clip's length is up.
 
 LoreCodexAudio = {
 	["100"] = 37.12,
