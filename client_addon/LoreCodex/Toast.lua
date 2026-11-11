@@ -1,7 +1,9 @@
 -- The discovery toasts: small banners near the top of the screen for each new entry, or for a known
 -- entry that just grew. Up to three show at once, stacked; anything beyond that waits, and when a
 -- banner frees up several waiting discoveries are folded into one ("5 more entries discovered").
--- Click a banner to read the entry (the summary opens Recent discoveries), right-click to dismiss.
+-- Click a banner to read the entry (the summary opens Recent discoveries), right-click to dismiss. With "banners
+-- read aloud" on, a click reads the entry aloud instead (what is new in it, for an entry that grew; a second click
+-- stops it) and Shift-click opens it in the codex. With "read new lore aloud" on, each discovery is read as it comes.
 -- The banners can be moved: the options page unlocks a placeholder to drag.
 
 local LC = LoreCodex
@@ -96,12 +98,31 @@ local function build(i)
 	hl:SetPoint("BOTTOMRIGHT", toast, "BOTTOMRIGHT", -4, 4)
 
 	toast:SetScript("OnClick", function (self, button)
-		local id, summary = self.entry, self.summary
+		local id, summary, updated = self.entry, self.summary, self.updated
+		if button == "LeftButton" and id and not summary and LC.GetOption("toastPlays") and not IsShiftKeyDown() then
+			-- read aloud, the banner kept (a second click stops it)
+			if LC.Audio.Entry() == id then LC.Audio.Stop() else LC.Audio.PlayEntry(id, updated) end
+			return
+		end
 		self:Hide()
 		if button == "LeftButton" then
 			if summary then LC.OpenRecent() elseif id then LC.Open(id) end
 		end
 	end)
+	toast:SetScript("OnEnter", function (self)
+		if self.summary or not self.entry then return end
+		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+		GameTooltip:SetText(self.title:GetText() or "", 1, 0.82, 0)
+		if LC.GetOption("toastPlays") then
+			GameTooltip:AddLine("Click to hear it read aloud (again to stop)", 1, 1, 1)
+			GameTooltip:AddLine("Shift-click to open it in the codex", 1, 1, 1)
+		else
+			GameTooltip:AddLine("Click to open it in the codex", 1, 1, 1)
+		end
+		GameTooltip:AddLine("Right-click to dismiss", 0.7, 0.7, 0.7)
+		GameTooltip:Show()
+	end)
+	toast:SetScript("OnLeave", function () GameTooltip:Hide() end)
 	toast:SetScript("OnHide", function () LC.After(0.3, LC.NextToast) end)
 	toast:SetScript("OnUpdate", function (self, elapsed)
 		if self:IsMouseOver() then
@@ -129,6 +150,7 @@ end
 local function show(toast, item)
 	toast.entry = item.id
 	toast.summary = item.summary
+	toast.updated = item.updated
 	if item.summary then
 		toast.label:SetText("Lore Discovered")
 		toast.icon:SetTexture(LC.KIND_ICON[3])
@@ -176,6 +198,8 @@ function LC.ShowToast(item)
 end
 
 LC.On("DISCOVERED", function (id, kind, zone, title, updated)
+	-- read aloud as it comes (an entry that grew: what is new in it)
+	if LC.GetOption("autoPlay") then LC.Audio.Announce(id, updated) end
 	if LoreCodexDB.options.toast then
 		LC.ShowToast({ id = id, kind = kind, zone = zone, title = title, updated = updated })
 	else

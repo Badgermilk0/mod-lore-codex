@@ -42,7 +42,7 @@ The voiceover is AI-generated speech, one clip per entry and per part. It is not
 2. Extract the contents of the zip into the addon's `audio` folder (`LoreCodex/audio`, which comes with the addon and starts out empty). The zip holds only the audio files, with no folder of its own, so the files should end up directly in `Interface/AddOns/LoreCodex/audio`, not in a subfolder.
 3. Log in, or type `/reload` if you are already in the game.
 
-Entries that have a clip now show a **Play all** button, and each section a speaker button. Clips play as sound effects, so music, ambience and the sounds around you keep playing underneath, and the voice follows the master and sound effects volume. Stopping a clip partway needs the WowClient64MC client, whose `PlaySoundFile` returns a handle for `StopSound`. If you don't see the buttons, check that the audio files are not inside an extra folder.
+Entries that have a clip now show a **Play all** button, and each section a speaker button. Two options read lore without opening the codex: **Read new lore aloud when it is discovered** plays each discovery as it comes (an entry that grew plays only what is new in it, and discoveries that arrive while one is playing wait their turn), and **Clicking a banner reads it aloud** turns a click on a discovery banner into playback (click again to stop; Shift-click opens the codex). Both are off by default, under **Interface > AddOns > Lore Codex** or `/codex voice` and `/codex listen`. Clips play as sound effects, so music, ambience and the sounds around you keep playing underneath, and the voice follows the master and sound effects volume. Stopping a clip partway needs the WowClient64MC client, whose `PlaySoundFile` returns a handle for `StopSound`. If you don't see the buttons, check that the audio files are not inside an extra folder.
 
 ## Usage
 
@@ -55,6 +55,8 @@ Everything can be changed under **Interface > AddOns > Lore Codex** (also from t
 | `/codex options` | Opens the settings |
 | `/codex toast` | Turns discovery banners on or off |
 | `/codex sound` | Turns the discovery sound on or off |
+| `/codex voice` | Reads new lore aloud as you discover it (voiceover audio) |
+| `/codex listen` | Clicking a banner reads it aloud instead of opening the codex (Shift-click opens it) |
 | `/codex minimap` | Shows or hides the minimap button |
 | `/codex map` | Shows or hides the world map button |
 | `/codex reset` | Moves the window back to the middle |
