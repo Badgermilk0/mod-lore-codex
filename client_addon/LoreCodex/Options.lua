@@ -1,4 +1,4 @@
--- The options page (Interface > AddOns > Lore Codex): toasts, their sound and position, the reading
+-- The options page (Interface > AddOns > Lore Codex): toasts, their sound, reading discoveries aloud and position, the reading
 -- text size, the minimap and world map buttons, and the key that opens the codex. Right-clicking the minimap button, the codex's
 -- Options button and /codex options all open it.
 
@@ -35,7 +35,9 @@ discovery:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -20)
 discovery:SetText("Discoveries")
 local toast = checkbox("toast", "Show a banner when you discover lore", discovery)
 local sound = checkbox("sound", "Play a sound with each discovery", toast)
-local moveToast = checkbox("moveToast", "Unlock the banners so you can drag them where you like", sound)
+local autoPlay = checkbox("autoPlay", "Read new lore aloud when it is discovered (needs the voiceover audio)", sound)
+local toastPlays = checkbox("toastPlays", "Clicking a banner reads it aloud instead of opening the codex (Shift-click opens it)", autoPlay)
+local moveToast = checkbox("moveToast", "Unlock the banners so you can drag them where you like", toastPlays)
 
 local reading = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 reading:SetPoint("TOPLEFT", moveToast, "BOTTOMLEFT", 0, -16)

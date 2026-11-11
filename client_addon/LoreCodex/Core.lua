@@ -689,6 +689,12 @@ SlashCmdList.LORECODEX = function (msg)
 	elseif msg == "sound" then
 		LC.SetOption("sound", not LC.GetOption("sound"))
 		LC.Print("discovery sound " .. (LoreCodexDB.options.sound and "on." or "off."))
+	elseif msg == "voice" or msg == "autoplay" then
+		LC.SetOption("autoPlay", not LC.GetOption("autoPlay"))
+		LC.Print("reading new lore aloud " .. (LC.GetOption("autoPlay") and "on." or "off."))
+	elseif msg == "listen" or msg == "clickplay" then
+		LC.SetOption("toastPlays", not LC.GetOption("toastPlays"))
+		LC.Print("clicking a banner " .. (LC.GetOption("toastPlays") and "reads it aloud (Shift-click opens it)." or "opens the codex."))
 	elseif msg == "minimap" then
 		LC.SetOption("minimap", not LC.GetOption("minimap"))
 		LC.Print("minimap button " .. (LC.GetOption("minimap") and "shown." or "hidden."))
@@ -709,7 +715,8 @@ SlashCmdList.LORECODEX = function (msg)
 		LC.Print("|cffffd200/codex|r opens the codex" .. (LC.KeyText() and (" (or " .. LC.KeyText() .. ")") or "") .. ". "
 			.. "|cffffd200/codex options|r opens the settings. |cffffd200/codex toast|r, |cffffd200/codex sound|r, "
 			.. "|cffffd200/codex minimap|r and |cffffd200/codex map|r turn the toasts, their sound, the minimap button "
-			.. "and the world map button on or off. |cffffd200/codex reset|r moves the window and the banners back. "
+			.. "and the world map button on or off. |cffffd200/codex voice|r reads new lore aloud as you discover it, "
+			.. "|cffffd200/codex listen|r makes a click on a banner read it aloud. |cffffd200/codex reset|r moves the window and the banners back. "
 			.. "|cffffd200/codex refresh|r fetches the data again.")
 	else
 		LC.Toggle()
